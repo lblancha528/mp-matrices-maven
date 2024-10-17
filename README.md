@@ -21,6 +21,7 @@ After setting the grid, the user can also retrieve the value at grid position (r
 ---
 
 Citations:
+* 10/16/24 Evening tutors: Audrey
 
 ---
 
