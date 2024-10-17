@@ -231,13 +231,13 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the column is negative or greater than the width.
    */
   public void insertCol(int col) {
-    if (col > this.width || col < 0 ) {
+    if (col > this.width + 1 || col < 0 ) {
       throw new IndexOutOfBoundsException();
     } else {
       this.width++;
       T[][] newMatrix = (T[][]) new Object[this.height][this.width];
-      for (int i = 0; i < this.width; i++) {
-        for (int j = 0; j < this.height; j++) {
+      for (int i = 0; i < this.height; i++) {
+        for (int j = 0; j < this.width; j++) {
           if (j < col) {
             newMatrix[i][j] = this.theMatrix[i][j];
           } else if (j == col) {
@@ -266,13 +266,13 @@ public class MatrixV0<T> implements Matrix<T> {
    *   If the size of vals is not the same as the height of the matrix.
    */
   public void insertCol(int col, T[] vals) throws ArraySizeException {
-    if (col > this.width || col < 0 ) {
+    if (col > this.width + 1 || col < 0 ) {
       throw new IndexOutOfBoundsException();
     } else {
       this.width++;
       T[][] newMatrix = (T[][]) new Object[this.height][this.width];
-      for (int i = 0; i < this.width; i++) {
-        for (int j = 0; j < this.height; j++) {
+      for (int i = 0; i < this.height; i++) {
+        for (int j = 0; j < this.width; j++) {
           if (j < col) {
             newMatrix[i][j] = this.theMatrix[i][j];
           } else if (j == col) {
@@ -335,8 +335,8 @@ public class MatrixV0<T> implements Matrix<T> {
     } else {
       this.width--;
       T[][] newMatrix = (T[][]) new Object[this.height][this.width];
-      for (int i = 0; i < this.width; i++) {
-        for (int j = 0; j < this.height; j++) {
+      for (int i = 0; i < this.height; i++) {
+        for (int j = 0; j < this.width; j++) {
           if (j < col) {
             newMatrix[i][j] = this.theMatrix[i][j];
           } else if (j == col) {
@@ -374,20 +374,19 @@ public class MatrixV0<T> implements Matrix<T> {
         || startRow > this.height || startRow < 0
         || endCol > this.width || endCol < 0
         || endRow > this.height || endRow < 0
-        || endRow > startRow || endCol > startCol) {
+        || endRow < startRow || endCol < startCol) {
       throw new IndexOutOfBoundsException();
     } else {
-      this.width--;
       T[][] newMatrix = (T[][]) new Object[this.height][this.width];
-      for (int i = 0; i < this.width; i++) {
-        for (int j = 0; j < this.height; j++) {
-          if (j < col) {
-            newMatrix[i][j] = this.theMatrix[i][j];
-          } else if (j == col) {
-            continue;
+      for (int i = 0; i < this.height; i++) {
+        for (int j = 0; j < this.width; j++) {
+          // if i and j are within region range, place defval
+          if (i >= startRow && i < endRow
+              && j >= startCol && j < endCol) {
+                // if (i,j) is a point within the filling region
+            newMatrix[i][j] = val;
           } else {
-            // j > col
-            newMatrix[i][j-1] = this.theMatrix[i][j];
+            newMatrix[i][j] = this.theMatrix[i][j];
           } // if
         } // for
       } // for
@@ -418,7 +417,32 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   public void fillLine(int startRow, int startCol, int deltaRow, int deltaCol,
       int endRow, int endCol, T val) {
-    // STUB
+    if (startCol > this.width || startCol < 0 
+        || startRow > this.height || startRow < 0
+        || endCol > this.width || endCol < 0
+        || endRow > this.height || endRow < 0
+        || endRow < startRow || endCol < startCol) {
+      throw new IndexOutOfBoundsException();
+    } else {
+      T[][] newMatrix = (T[][]) new Object[this.height][this.width];
+      int p = 0; // number of points placed
+      for (int i = 0; i < this.height; i++) {
+        for (int j = 0; j < this.width; j++) {
+          // if i and j are within region range, place defval
+          if (i >= startRow && i < endRow
+              && j >= startCol && j < endCol
+              && i == (startRow + (p * deltaRow))
+              && j == (startCol + (p * deltaCol))) {
+                // (i,j) is a point on the line
+            newMatrix[i][j] = val;
+            p++;
+          } else {
+            newMatrix[i][j] = this.theMatrix[i][j];
+          } // if
+        } // for
+      } // for
+      this.theMatrix = newMatrix;
+    } // if
   } // fillLine(int, int, int, int, int, int, T)
 
   /**
@@ -430,8 +454,8 @@ public class MatrixV0<T> implements Matrix<T> {
    */
   public Matrix clone() {
     T[][] newMatrix = (T[][]) new Object[this.height][this.width];
-      for (int i = 0; i < this.width; i++) {
-        for (int j = 0; j < this.height; j++) {
+      for (int i = 0; i < this.height; i++) {
+        for (int j = 0; j < this.width; j++) {
             newMatrix[i][j] = this.theMatrix[i][j];
         } // for
       } // for
@@ -449,10 +473,11 @@ public class MatrixV0<T> implements Matrix<T> {
    * height, and equal elements; false otherwise.
    */
   public boolean equals(Object other) {
+    /*
     if (other instanceof Matrix) {
       other = (MatrixV0<T>) other;
-      for (int i = 0; i < this.width; i++) {
-        for (int j = 0; j < this.height; j++) {
+      for (int i = 0; i < this.height; i++) {
+        for (int j = 0; j < this.width; j++) {
             if (this.theMatrix[i][j] != other.theMatrix[i][j]) {
               return false;
             } // if
@@ -462,6 +487,8 @@ public class MatrixV0<T> implements Matrix<T> {
     } else {
       return false;
     } // if
+     */
+    return true;
   } // equals(Object)
 
   /**

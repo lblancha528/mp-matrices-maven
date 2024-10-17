@@ -23,6 +23,11 @@ After setting the grid, the user can also retrieve the value at grid position (r
 Citations:
 * 10/16/24 Evening tutors: Audrey
 
+Notes to Self:
+* How to throw ArraySizeException? says to add throws clause, but incompatible with interface
+    says to add try/catch but nothing to catch
+* expected [4] was [null] -> no clue!
+
 ---
 
 This code may be found at <https://github.com/lblancha528/mp-matrices-maven>. 

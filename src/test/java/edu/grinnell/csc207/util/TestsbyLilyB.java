@@ -155,18 +155,18 @@ class TestsbyLilyB {
   @Test
   public void testHeightAndWidth() throws ArraySizeException {
     Matrix<String> testB = new MatrixV0(3, 5);
-    assertEquals(3, testB.height(), "height from declaration");
-    assertEquals(5, testB.width(), "width from declaration");
+    assertEquals(5, testB.height(), "height from declaration");
+    assertEquals(3, testB.width(), "width from declaration");
     testB.insertRow(2);
-    testB.insertCol(4);
-    assertEquals(4, testB.height(), "height after insert row");
-    assertEquals(6, testB.width(), "width after insert column");
+    testB.insertCol(3);
+    assertEquals(6, testB.height(), "height after insert row");
+    assertEquals(4, testB.width(), "width after insert column");
     testB.deleteRow(1);
-    assertEquals(3, testB.height(), "height after remove row");
-    assertEquals(6, testB.width(), "width after remove row");
+    assertEquals(5, testB.height(), "height after remove row");
+    assertEquals(4, testB.width(), "width after remove row");
     testB.deleteCol(2);
-    assertEquals(3, testB.height(), "height after remove column");
-    assertEquals(6, testB.width(), "width after remove column");
+    assertEquals(5, testB.height(), "height after remove column");
+    assertEquals(3, testB.width(), "width after remove column");
   } // testHeightAndWidth()
 
   /**
@@ -175,12 +175,12 @@ class TestsbyLilyB {
   @Test
   public void testFillRegion() throws ArraySizeException {
     Matrix<String> testF = new MatrixV0(4, 6);
-    testF.fillRegion(1, 1, 3, 5, "G");
+    testF.fillRegion(1, 1, 3, 4, "G");
     assertMatrixEquals(
       new String[][]
           {{null, null, null, null, null, null},
-          {null, "G", "G", "G", "G", null},
-          {null, "G", "G", "G", "G", null},
+          {null, "G", "G", "G", null, null},
+          {null, "G", "G", "G", null, null},
           {null, null, null, null, null, null}},
       testF,
       "fill middle chunk");
